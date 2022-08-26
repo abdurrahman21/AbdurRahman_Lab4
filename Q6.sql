@@ -1,0 +1,8 @@
+SELECT category.CAT_ID, category.CAT_NAME, MIN(T3.MIN_PRICE) AS MIN_PRICE,  FROM category
+INNER JOIN
+	(
+		SELECT product.CAT_ID, product.PRO_NAME, T2.* FROM product
+        INNER JOIN(SELECT PRO_ID, MIN(SUPP_PRICE) AS MIN_PRICE FROM supplier_pricing GROUP BY PRO_ID)
+			AS T2 WHERE T2.PRO_ID = product.PRO_ID
+	) AS T3 
+WHERE T3.CAT_ID = category.CAT_ID GROUP BY T3.CAT_ID;
